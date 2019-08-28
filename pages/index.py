@@ -4,8 +4,20 @@ import dash_core_components as dcc
 import dash_html_components as html
 from dash.dependencies import Input, Output
 import plotly.express as px
+import plotly.graph_objects as go
 
 from app import app
+import pandas as pd
+bitcoin = pd.read_csv('bitcoin.csv')
+
+bitcoin['string_date'] = bitcoin['Date'].copy()
+bitcoin['Date'] = pd.to_datetime(bitcoin['Date'])
+bitcoin['Year'] = bitcoin['Date'].dt.year
+bitcoin['Month'] = bitcoin['Date'].dt.month
+bitcoin['Day'] = bitcoin['Date'].dt.day
+
+drop_columns = ['Date','Close**', 'Volume', 'Market Cap', 'High', 'Low']
+new_bitcoin = bitcoin.drop(columns=drop_columns)
 
 """
 https://dash-bootstrap-components.opensource.faculty.ai/l/components/layout
@@ -29,24 +41,51 @@ column1 = dbc.Col(
         dcc.Markdown(
             """
         
-            ## Value Proposition
+            ## Bitcoin Historical Data
 
-            Emphasize how the app will benefit users. Don't emphasize the underlying technology.
+            This app will do its best to predict bitcoin prices. 
+            
+            I'm afraid this app will not predict the future price of Bitcoin.
 
-            ✅ RUN is a running app that adapts to your fitness levels and designs personalized workouts to help you improve your running.
+            On the right you can see a beautiful Plotly graph.
+            The graph shows bitcoin's actual high and low values for each day that is recorded.
 
-            ❌ RUN is the only intelligent running app that uses sophisticated deep neural net machine learning to make your run smarter because we believe in ML driven workouts.
+            If you have any comments, questions, or just want to say "hi" click one of the little 
+            boxes at the bottom of any of the pages to get in contact with me.
 
             """
         ),
-        dcc.Link(dbc.Button('Call To Action', color='primary'), href='/predictions')
+        dcc.Link(dbc.Button('Predictions', color='primary'), href='/predictions')
     ],
     md=4,
 )
 
-gapminder = px.data.gapminder()
-fig = px.scatter(gapminder.query("year==2007"), x="gdpPercap", y="lifeExp", size="pop", color="continent",
-           hover_name="country", log_x=True, size_max=60)
+import plotly.graph_objects as go
+
+fig = go.Figure()
+fig.add_trace(go.Scatter(
+                x=bitcoin.Date,
+                y=bitcoin['High'],
+                name='BTC High',
+                line_color = 'green',
+                opacity=0.8)
+             )
+
+fig.add_trace(go.Scatter(
+                x=bitcoin.Date,
+                y=bitcoin['Low'],
+                name='BTC Low',
+                line_color = 'red',
+                opacity=0.8)
+             )
+
+fig.update_layout(xaxis_range=['2013-04-28','2019-08-12'],
+                 title_text='Bitcoin Historical High and Low Data')
+
+# 'layout': go.Layout(
+#     paper_bgcolor='rgba(0,0,0,0)',
+#     plot_bgcolor='rgba(0,0,0,0)'
+# )
 
 column2 = dbc.Col(
     [
