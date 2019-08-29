@@ -44,14 +44,13 @@ column1 = dbc.Col(
             ## Bitcoin Historical Data
 
             This app will do its best to predict bitcoin prices. 
-            
-            I'm afraid this app will not predict the future price of Bitcoin.
+            This app will not predict the future price of Bitcoin.
 
-            On the right you can see a beautiful Plotly graph.
-            The graph shows bitcoin's actual high and low values for each day that is recorded.
+            On the right, there's a Plotly graph of bitcoin's historical 
+            high and low prices for every day in the data.
 
-            If you have any comments, questions, or just want to say "hi" click one of the little 
-            boxes at the bottom of any of the pages to get in contact with me.
+            If you have any comments or questions feel free to click 
+            one of the boxes below to get in contact with me.
 
             """
         ),
@@ -81,11 +80,6 @@ fig.add_trace(go.Scatter(
 
 fig.update_layout(xaxis_range=['2013-04-28','2019-08-12'],
                  title_text='Bitcoin Historical High and Low Data')
-
-# 'layout': go.Layout(
-#     paper_bgcolor='rgba(0,0,0,0)',
-#     plot_bgcolor='rgba(0,0,0,0)'
-# )
 
 column2 = dbc.Col(
     [

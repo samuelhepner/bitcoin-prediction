@@ -77,7 +77,14 @@ column2 = dbc.Col(
     ]
 )
 
-layout = dbc.Row([column1, column2])
+column3 = dbc.Col(
+    [
+        html.H2('Actual price', className='mb-5'),
+        html.Div(id='actual-price', className='lead')
+    ]
+)
+
+layout = dbc.Row([column1, column2, column3])
 
 
 @app.callback(
@@ -91,5 +98,17 @@ def predict(year, month, day):
         return f'We cannot predict for {str_date}. It either has not happened yet or never will.'
     else:
         y_pred = pipeline.predict(row)[0]
-    return f'Bitcoin is predicted to be ${y_pred: .2f} on {str_date}.'
+    return f'Bitcoin is predicted to close at ${y_pred:.2f} on {str_date}.'
 
+@app.callback(
+    Output('actual-price', 'children'),
+    [Input('year', 'value'), Input('month', 'value'), Input('day','value')]
+)
+def getActual(year, month, day):
+    str_date = str(month) + '/' + str(day) + '/' + str(year)
+    row = bitcoin.query('string_date==@str_date')
+    if row.shape[0] == 0:
+        return f'That is not a date that we have data for.'
+    else:
+        real_price = bitcoin['Close**'][row.index[0]]
+        return f'Bitcoin closed at ${real_price:.2f} on {str_date}.'

@@ -36,17 +36,16 @@ column1 = dbc.Col(
 
             ## Insights
 
-            To the left, you'll see a Partial Dependence PLot.
+            To the right, you'll see a Partial Dependence Plot(PDP).
 
             Essentially what it's saying is, as the opening price increases you'll expect 
-            either higher prices, lower prices, or no change in prices. 
+            either higher prices, lower prices, or no change in prices.
             (depending on what opening price you're looking at)
 
-            If you look at the graph under the prediction tab,
+            If you look at the graph below the PDP,
             you'll notice that my model fits really well for years 2013 - 2017.
             However, for years 2018 - 2019, the model is not as tight.
-
-            This likely due to the fall of bitcoin from Dec. 2017 - February 2018.
+            This is likely due to the fall of bitcoin from Dec. 2017 - February 2018.
 
             """
         ),
